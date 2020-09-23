@@ -26,7 +26,8 @@ export class ProductListComponent implements OnInit {
 
   filteredProducts: IProduct[];
 
-
+  product:any;
+  errorMessage: string;
   products: IProduct[] = [];
 
   /**
@@ -52,8 +53,33 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('In OnInit');
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
+  //  this.productService.getProducts().subscribe(
+  //     {
+  //       next: products =>{
+  //         this.products = products;
+  //         // console.log(this.products);
+  //       },
+  //       error(err)  {console.log(err)},
+  //       complete:()=>this.filteredProducts = this.products
+  //     }
+  //   );
+  //  this.productService.create_NewEmploye() ;
+    this.productService.getProductsFromServer().subscribe(data =>{
+      this.product = data.map(e=>{
+        return {
+          productId: e.payload.doc.data()["productId"],
+          productName: e.payload.doc.data()["productName"],
+          productCode: e.payload.doc.data()["productCode"],
+          releaseDate: e.payload.doc.data()["releaseDate"],
+          price: e.payload.doc.data()["price"],
+          description: e.payload.doc.data()["description"],
+          starRating: e.payload.doc.data()["starRating"],
+          imageUrl:  e.payload.doc.data()["imageUrl"],
+        }
+      }); console.log(this.product);
+    });
+   
+    
   }
 
 
