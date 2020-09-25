@@ -1,9 +1,10 @@
 import { ProductService } from './product.service';
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
-  selector: "pm-products",
+  // selector: "pm-products",
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -26,7 +27,7 @@ export class ProductListComponent implements OnInit {
 
   filteredProducts: IProduct[];
 
-  product:any;
+  product:IProduct;
   errorMessage: string;
   products: IProduct[] = [];
 
@@ -65,7 +66,7 @@ export class ProductListComponent implements OnInit {
   //   );
   //  this.productService.create_NewEmploye() ;
     this.productService.getProductsFromServer().subscribe(data =>{
-      this.product = data.map(e=>{
+     next: this.products = data.map(e=>{
         return {
           productId: e.payload.doc.data()["productId"],
           productName: e.payload.doc.data()["productName"],
@@ -76,8 +77,8 @@ export class ProductListComponent implements OnInit {
           starRating: e.payload.doc.data()["starRating"],
           imageUrl:  e.payload.doc.data()["imageUrl"],
         }
-      }); console.log(this.product);
-    });
+      });this.filteredProducts = this.products;
+      });
    
     
   }
